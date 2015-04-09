@@ -63,7 +63,9 @@ void Tuio2Demo::drawObjects() {
 				glVertex3f(point->getScreenX(width), point->getScreenY(height), 0.0f);
 				last_point.update(point->getX(),point->getY());
 			} glEnd();
-			
+
+			//std::cout << "X, Y: \t" << tptr->getX() << ", " << tptr->getY() << std::endl;
+			/*
 			// draw the finger tip
 			glColor3f(0.75, 0.75, 0.75);
 			glPushMatrix();
@@ -77,7 +79,7 @@ void Tuio2Demo::drawObjects() {
 			glColor3f(0.0, 0.0, 0.0);
 			glRasterPos2f(tptr->getScreenX(width),tptr->getScreenY(height));
 			sprintf(id,"%d",tptr->getPointerID());
-			drawString(id);
+			drawString(id);*/
 		}
 	}
     tuioClient->unlockObjectList();
@@ -117,8 +119,8 @@ void Tuio2Demo::drawObjects() {
     tuioClient->lockObjectList();
 	for (std::list<TuioBounds*>::iterator iter = blobList.begin(); iter!=blobList.end(); iter++) {
 		TuioBounds *tbnd = (*iter);
-		float blob_width = tbnd->getScreenWidth(width)/2;
-		float blob_height = tbnd->getScreenHeight(height)/2;
+		float blob_width = tbnd->getWidth();
+		float blob_height = tbnd->getHeight();
 		float xpos  = tbnd->getScreenX(width);
 		float ypos  = tbnd->getScreenY(height);
 		float angle = tbnd->getAngleDegrees();
@@ -143,7 +145,7 @@ void Tuio2Demo::drawObjects() {
 		glPopMatrix();
 		
 		glColor3f(1.0, 1.0, 1.0);
-		glRasterPos2f(xpos,ypos+5);
+		glRasterPos2f(xpos,ypos);
 		drawString(id);
 	}
     tuioClient->unlockObjectList();
