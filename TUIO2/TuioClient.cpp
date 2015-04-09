@@ -132,7 +132,10 @@ void TuioClient::processOSC( const ReceivedMessage& msg ) {
             unsigned short t_id, u_id;
             unsigned int s_id,c_id;
             float xpos, ypos, angle, shear,radius, pressure, xspeed, yspeed, pspeed, maccel, paccel;
-            args >> s_id_raw >> tu_id_raw >> c_id_raw >> xpos >> ypos >> angle >> shear >> radius >> pressure;
+            args >> s_id_raw >> tu_id_raw >> c_id_raw >> xpos >> ypos >> angle >> shear;
+            // >> radius >> pressure;
+            radius = 0;
+            pressure = 0;
             if (!args.Eos()) args >> xspeed >> yspeed >> pspeed >> maccel >> paccel;
             else xspeed = yspeed = pspeed = maccel = paccel = 0.0f;
             

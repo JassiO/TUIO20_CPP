@@ -183,6 +183,7 @@ void Tuio2Demo::initWindow() {
 	glViewport(0, 0, (GLint)width, (GLint)height);
 	glMatrixMode(GL_PROJECTION);	
 	glLoadIdentity();
+	glScalef(1, -1, 1);
 	gluOrtho2D(0, (GLfloat)width, (GLfloat)height, 0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -218,7 +219,7 @@ void Tuio2Demo::processEvents()
 
 Tuio2Demo::Tuio2Demo(int port) 
 : verbose (false)
-, fullscreen(false)
+, fullscreen(true)
 , screen_width (1024)
 , screen_height (768)
 , window_width (640)
