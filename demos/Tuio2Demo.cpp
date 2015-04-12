@@ -119,8 +119,8 @@ void Tuio2Demo::drawObjects() {
     tuioClient->lockObjectList();
 	for (std::list<TuioBounds*>::iterator iter = blobList.begin(); iter!=blobList.end(); iter++) {
 		TuioBounds *tbnd = (*iter);
-		float blob_width = tbnd->getWidth();
-		float blob_height = tbnd->getHeight();
+		float blob_width = tbnd->getScreenWidth(width);
+		float blob_height = tbnd->getScreenHeight(height);
 		float xpos  = tbnd->getScreenX(width);
 		float ypos  = tbnd->getScreenY(height);
 		float angle = tbnd->getAngleDegrees();
@@ -222,8 +222,8 @@ void Tuio2Demo::processEvents()
 Tuio2Demo::Tuio2Demo(int port) 
 : verbose (false)
 , fullscreen(true)
-, screen_width (1024)
-, screen_height (768)
+, screen_width (1920)
+, screen_height (1080)
 , window_width (640)
 , window_height (480)
 {

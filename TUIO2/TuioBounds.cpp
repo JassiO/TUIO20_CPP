@@ -82,11 +82,11 @@ float TuioBounds::getHeight() const{
 }
 
 int TuioBounds::getScreenWidth(int w) const{ 
-	return (int)(w*width);
+	return (int)((w*width) /1920);
 }
 
 int TuioBounds::getScreenHeight(int h) const{ 
-	return (int)(h*height);
+	return (int)((h*height) / 1080);
 }
 
 float TuioBounds::getArea() const{ 
