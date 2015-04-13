@@ -125,7 +125,7 @@ void Tuio2Demo::drawObjects() {
 		float ypos  = tbnd->getScreenY(height);
 		float angle = tbnd->getAngleDegrees();
 		
-		glColor3f(0.25, 0.25, 0.25);
+		glColor3f(1.0, 1.0, 1.0);
 		glPushMatrix();
 		glTranslatef(xpos, ypos, 0.0);
 		glRotatef(-angle, 0.0, 0.0, 1.0);
@@ -181,7 +181,7 @@ void Tuio2Demo::initWindow() {
 	}
 	
 	SDL_ShowCursor(!fullscreen);
-	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glViewport(0, 0, (GLint)width, (GLint)height);
 	glMatrixMode(GL_PROJECTION);	
 	glLoadIdentity();
