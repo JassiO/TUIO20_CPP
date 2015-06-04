@@ -57,13 +57,13 @@ void Tuio2Demo::drawObjects() {
 			TuioPoint last_point = path.front();
 			glBegin(GL_LINES);
 			glColor3f(0.0, 0.0, 1.0);
-			
+			/*
 			for (std::list<TuioPoint>::iterator point = path.begin(); point!=path.end(); point++) {
 				glVertex3f(last_point.getScreenX(width), last_point.getScreenY(height), 0.0f);
 				glVertex3f(point->getScreenX(width), point->getScreenY(height), 0.0f);
 				last_point.update(point->getX(),point->getY());
 			} glEnd();
-
+			*/
 			//std::cout << "X, Y: \t" << tptr->getX() << ", " << tptr->getY() << std::endl;
 			/*
 			// draw the finger tip
@@ -124,12 +124,13 @@ void Tuio2Demo::drawObjects() {
 		float xpos  = tbnd->getScreenX(width);
 		float ypos  = tbnd->getScreenY(height);
 		float angle = tbnd->getAngleDegrees();
+		std::cout << xpos << ", " << ypos << std::endl;
 		
 		glColor3f(1.0, 1.0, 1.0);
 		glPushMatrix();
 		glTranslatef(xpos, ypos, 0.0);
 		glRotatef(-angle, 0.0, 0.0, 1.0);
-		
+		std::cout << xpos << ", " << ypos << std::endl;
 		/*glBegin(GL_QUADS);
 		 glVertex2f(blob_width/-2, blob_height/-2);
 		 glVertex2f(blob_width/-2, blob_height/2);
@@ -139,7 +140,7 @@ void Tuio2Demo::drawObjects() {
 		
 		glBegin(GL_TRIANGLE_FAN);
 		for(double a = 0.0f; a <= 2*M_PI; a += 0.2f) {
-			glVertex2d(cos(a) * blob_width, sin(a) * blob_height);
+			glVertex2d(cos(a) * blob_width *2, sin(a) * blob_height*2);
 		} glEnd();
 		
 		glPopMatrix();
@@ -147,6 +148,7 @@ void Tuio2Demo::drawObjects() {
 		glColor3f(1.0, 1.0, 1.0);
 		glRasterPos2f(xpos,ypos);
 		drawString(id);
+		//std::cout << xpos << ", " << ypos << std::endl;
 	}
     tuioClient->unlockObjectList();
 
@@ -162,7 +164,7 @@ void Tuio2Demo::drawString(char *str) {
 	}
 }
 
-void Tuio2Demo::initWindow() {
+void Tuio2Demo::initWindow(bool flipped) {
 	
 	int videoFlags = SDL_OPENGL | SDL_DOUBLEBUF;
 	if( fullscreen ) {
@@ -179,13 +181,21 @@ void Tuio2Demo::initWindow() {
 		std::cerr << "Could not open window: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 	}
+
+	int flip = -1;
+	if( flipped == true ) {
+		flip = -1;
+	}
+	else {
+		flip = 1;
+	}
 	
 	SDL_ShowCursor(!fullscreen);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glViewport(0, 0, (GLint)width, (GLint)height);
 	glMatrixMode(GL_PROJECTION);	
 	glLoadIdentity();
-	glScalef(1, -1, 1);
+	glScalef(1, flip, 1);
 	gluOrtho2D(0, (GLfloat)width, (GLfloat)height, 0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -194,21 +204,18 @@ void Tuio2Demo::initWindow() {
 void Tuio2Demo::processEvents()
 {
     SDL_Event event;
-	
     while( SDL_PollEvent( &event ) ) {
-		
         switch( event.type ) {
 			case SDL_KEYDOWN:
 				if( event.key.keysym.sym == SDLK_ESCAPE ){
 					running = false;
 					SDL_ShowCursor(true);
-					SDL_Quit();
-				} else if( event.key.keysym.sym == SDLK_F1 ){
+					SDL_Quit(); } 
+				else if( event.key.keysym.sym == SDLK_F1 ){
 					fullscreen = !fullscreen;
-					initWindow();
-				} else if( event.key.keysym.sym == SDLK_v ){
-					verbose = !verbose;	
-				} 
+					initWindow(flipped); }
+				else if( event.key.keysym.sym == SDLK_v ){
+					verbose = !verbose;	} 
 				
 				break;
 			case SDL_QUIT:
@@ -221,11 +228,12 @@ void Tuio2Demo::processEvents()
 
 Tuio2Demo::Tuio2Demo(int port) 
 : verbose (false)
+, flipped(true)
 , fullscreen(true)
 , screen_width (1920)
 , screen_height (1080)
-, window_width (640)
-, window_height (480)
+, window_width (1920)
+, window_height (1080)
 {
 	osc_receiver = new UdpReceiver(port);
 //	osc_receiver = new TcpReceiver("127.0.0.1",3333);
@@ -246,7 +254,7 @@ Tuio2Demo::Tuio2Demo(int port)
 	screen_height = SDL_GetVideoInfo()->current_h;
 	
 	SDL_WM_SetCaption("Tuio2Demo", NULL);
-	initWindow();
+	initWindow(flipped);
 }
 
 void Tuio2Demo::run() {
