@@ -63,9 +63,9 @@ private:
 	void drawObjects();
 	void drawString(char *str);
 	void processEvents();
-	void initWindow();
+	void initWindow(bool flipped);
 	SDL_Surface *window;
-	bool verbose, fullscreen, running;
+	bool verbose, fullscreen, running, flipped;
 	
 	int width, height;
 	int screen_width, screen_height;
